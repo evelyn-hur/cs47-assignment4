@@ -3,7 +3,10 @@ import { FlatList, ScrollView, SafeAreaView } from "react-native";
 import Song from "./Song";
 import Header from "./Header";
 
-const renderItem = ({ item, index }) => (
+
+const renderItem = ( props ) => {
+    const {item, index} = props;
+    return (
     <Song
     id={index+1}
     image={item.imageUrl}
@@ -11,8 +14,11 @@ const renderItem = ({ item, index }) => (
     album={item.albumName}
     artist={item.songArtists[0].name}
     duration={item.duration}
+    externalUrl={item.externalUrl}
+    previewUrl={item.previewUrl}
     />
 );
+}
 
 const SongList = ({tracks}) => {
     return (

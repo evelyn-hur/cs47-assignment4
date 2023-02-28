@@ -1,27 +1,38 @@
-import { Text, StyleSheet, Image, View, Dimensions } from "react-native";
+import { Text, StyleSheet, Image, View, Dimensions, Pressable } from "react-native";
 import { Themes } from "../../assets/Themes";
 import { millisToMinutesAndSeconds } from "../../utils";
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get("window").width;
 
-export default function Song({id, image, title, album, artist, duration}) {
+export default function Song({ image, title, album, artist, duration, previewUrl, externalUrl}) {
+    const navigation = useNavigation()
     return (
         <View style = {styles.main}>
             <View style = {styles.rankView}>
-                <Text style = {styles.textWhite}>{id}</Text>
+                <Pressable onPress={() => navigation.navigate('PreviewScreen', {previewAddress: previewUrl})}>
+                    <Ionicons name="play-circle" size={23} style={styles.playButton}/>
+                </Pressable>
             </View>
-
+            
             <View style = {styles.generalView}>
-                <Image style = {styles.image} source = {{uri: image}}></Image>
+                <Pressable onPress={() => navigation.navigate('DetailsScreen', {externalAddress: externalUrl})}>
+                    <Image style = {styles.image} source = {{uri: image}}></Image>
+                </Pressable>
             </View>
 
             <View style = {styles.titleView}>
-                <Text numberOfLines={1} style={styles.textWhite}>{title}</Text>
-                <Text style = {styles.textGray}>{artist}</Text>
+                <Pressable onPress={() => navigation.navigate('DetailsScreen', {externalAddress: externalUrl})}>
+                    <Text numberOfLines={1} style={styles.textWhite}>{title}</Text>
+                    <Text style = {styles.textGray}>{artist}</Text>
+                </Pressable>
             </View>
 
             <View style = {styles.generalView}>
-                <Text numberOfLines={1} style = {styles.textWhite}>{album}</Text>
+                <Pressable onPress={() => navigation.navigate('DetailsScreen', {externalAddress: externalUrl})}>
+                    <Text numberOfLines={1} style = {styles.textWhite}>{album}</Text>
+                </Pressable>
             </View>
 
             <View style = {styles.generalView}>
@@ -58,6 +69,9 @@ const styles = StyleSheet.create({
     rankView: {
         marginLeft: 20,
         marginTop: 20,
+    },
+    playButton: {
+        color: Themes.colors.spotify,
     },
     titleView: {
         width: windowWidth * 0.25,
